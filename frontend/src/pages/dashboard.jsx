@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
+import Header from '../components/header';
+import Footer from '../components/footer';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const Icon = ({ name, ...props }) => {
   const LucideIcon = Icons?.[name] || Icons.HelpCircle;
@@ -15,7 +18,7 @@ const KPICard = ({ title, value, trend, trendDirection, icon }) => (
     className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
   >
     <div className="flex items-center justify-between mb-4">
-      <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+      <div className="p-3 bg-gradient-to-br from-[#5E6AD2] to-[#7C3AED] rounded-xl">
         <Icon name={icon} className="w-6 h-6 text-white" />
       </div>
       <div className={`flex items-center gap-1 text-sm ${trendDirection === 'up' ? 'text-green-400' : 'text-red-400'}`}>
@@ -33,7 +36,7 @@ const RevenueChart = ({ data, timeRange, setTimeRange }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.2 }}
-    className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 col-span-2"
+    className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 lg:col-span-2"
   >
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-white text-xl font-semibold">Revenue Overview</h2>
@@ -44,7 +47,7 @@ const RevenueChart = ({ data, timeRange, setTimeRange }) => (
             onClick={() => setTimeRange(range)}
             className={`px-3 py-1 rounded-lg text-sm transition-all duration-300 ${
               timeRange === range
-                ? 'bg-indigo-500 text-white'
+                ? 'bg-[#5E6AD2] text-white'
                 : 'bg-white/10 text-white/60 hover:bg-white/20'
             }`}
           >
@@ -60,7 +63,7 @@ const RevenueChart = ({ data, timeRange, setTimeRange }) => (
           initial={{ height: 0 }}
           animate={{ height: `${(item.value / Math.max(...data.map(d => d.value))) * 100}%` }}
           transition={{ duration: 1, delay: index * 0.1 }}
-          className="flex-1 bg-gradient-to-t from-indigo-500 to-purple-500 rounded-t-lg relative group cursor-pointer"
+          className="flex-1 bg-gradient-to-t from-[#5E6AD2] to-[#00D4FF] rounded-t-lg relative group cursor-pointer"
         >
           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
@@ -90,10 +93,10 @@ const ActivityHeatmap = ({ data }) => (
           transition={{ duration: 0.5, delay: index * 0.02 }}
           className={`aspect-square rounded-sm ${
             item.intensity === 0 ? 'bg-white/10' :
-            item.intensity < 25 ? 'bg-indigo-500/30' :
-            item.intensity < 50 ? 'bg-indigo-500/50' :
-            item.intensity < 75 ? 'bg-indigo-500/70' :
-            'bg-indigo-500'
+            item.intensity < 25 ? 'bg-[#00D4FF]/30' :
+            item.intensity < 50 ? 'bg-[#00D4FF]/50' :
+            item.intensity < 75 ? 'bg-[#00D4FF]/70' :
+            'bg-[#00D4FF]'
           } hover:scale-110 transition-transform duration-300 cursor-pointer`}
           title={`${item.date}: ${item.intensity}% activity`}
         />
@@ -121,7 +124,7 @@ const ActivityFeed = ({ activities }) => (
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="flex items-start gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors duration-300"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5E6AD2] to-[#00D4FF] flex items-center justify-center flex-shrink-0">
               <Icon name={activity.icon} className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
@@ -151,7 +154,7 @@ const QuickActions = ({ actions }) => (
           whileTap={{ scale: 0.98 }}
           className="flex items-center gap-3 p-3 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-300 group"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#5E6AD2] to-[#00D4FF] flex items-center justify-center">
             <Icon name={action.icon} className="w-4 h-4 text-white" />
           </div>
           <span className="text-sm font-medium">{action.title}</span>
@@ -211,7 +214,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Simulate data refresh
       setKpiData(prev => prev.map(item => ({
         ...item,
         value: item.title === 'Monthly Recurring Revenue' 
@@ -226,16 +228,18 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#050506] via-[#0a0a0b] to-[#0f0f11] text-white">
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
+    <div className="min-h-screen bg-[#050506]">
+      <Header />
+      
+      <main className="container mx-auto px-4 md:px-6 py-12 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-between mb-12"
+          className="mb-12 flex items-center justify-between"
         >
           <div>
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-[#5E6AD2] to-[#00D4FF] bg-clip-text text-transparent mb-2">
               Dashboard
             </h1>
             <p className="text-white/60 text-lg">Welcome back! Here's your overview.</p>
@@ -244,7 +248,7 @@ export default function Dashboard() {
             <button className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300">
               <Icon name="Bell" className="w-6 h-6" />
               {notifications > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-[#00D4FF] text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {notifications}
                 </span>
               )}
@@ -267,7 +271,9 @@ export default function Dashboard() {
           <ActivityFeed activities={activities} />
           <QuickActions actions={quickActions} />
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

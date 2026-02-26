@@ -23,8 +23,6 @@ export default function AnalyticsPage() {
 
   const handleExport = async () => {
     setIsExporting(true);
-    // TODO: connect API endpoint using src/config/api.js
-    // const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ANALYTICS_TRAFFIC}/export`);
     setTimeout(() => {
       setIsExporting(false);
       const link = document.createElement('a');

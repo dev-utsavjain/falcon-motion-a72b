@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const Icon = ({ name, ...props }) => {
   const LucideIcon = Icons?.[name] || Icons.HelpCircle;

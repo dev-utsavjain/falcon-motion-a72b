@@ -1,36 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import * as Icons from 'lucide-react';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const Icon = ({ name, ...props }) => {
   const LucideIcon = Icons?.[name] || Icons.HelpCircle;
   return <LucideIcon {...props} />;
 };
-
-const mockUsers = [
-  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', status: 'Active', role: 'Admin', createdAt: '2023-01-15', lastActive: '2024-07-01' },
-  { id: 2, name: 'Bob Smith', email: 'bob@example.com', status: 'Active', role: 'User', createdAt: '2023-02-20', lastActive: '2024-06-30' },
-  { id: 3, name: 'Carol White', email: 'carol@example.com', status: 'Pending', role: 'Guest', createdAt: '2024-06-01', lastActive: '2024-06-29' },
-  { id: 4, name: 'David Brown', email: 'david@example.com', status: 'Inactive', role: 'User', createdAt: '2023-03-10', lastActive: '2023-12-15' },
-  { id: 5, name: 'Eve Davis', email: 'eve@example.com', status: 'Active', role: 'Admin', createdAt: '2023-04-05', lastActive: '2024-07-02' },
-  { id: 6, name: 'Frank Miller', email: 'frank@example.com', status: 'Active', role: 'User', createdAt: '2023-05-12', lastActive: '2024-06-28' },
-  { id: 7, name: 'Grace Lee', email: 'grace@example.com', status: 'Active', role: 'User', createdAt: '2023-06-18', lastActive: '2024-07-01' },
-  { id: 8, name: 'Henry Clark', email: 'henry@example.com', status: 'Pending', role: 'Guest', createdAt: '2024-05-20', lastActive: '2024-05-25' },
-  { id: 9, name: 'Ivy Martinez', email: 'ivy@example.com', status: 'Active', role: 'Admin', createdAt: '2023-07-22', lastActive: '2024-07-02' },
-  { id: 10, name: 'Jack Wilson', email: 'jack@example.com', status: 'Inactive', role: 'User', createdAt: '2023-08-30', lastActive: '2024-01-10' },
-  { id: 11, name: 'Karen Moore', email: 'karen@example.com', status: 'Active', role: 'User', createdAt: '2023-09-14', lastActive: '2024-06-30' },
-  { id: 12, name: 'Leo Taylor', email: 'leo@example.com', status: 'Active', role: 'Guest', createdAt: '2023-10-05', lastActive: '2024-06-29' },
-  { id: 13, name: 'Mia Anderson', email: 'mia@example.com', status: 'Pending', role: 'User', createdAt: '2024-04-01', lastActive: '2024-04-15' },
-  { id: 14, name: 'Noah Thomas', email: 'noah@example.com', status: 'Active', role: 'Admin', createdAt: '2023-11-11', lastActive: '2024-07-02' },
-  { id: 15, name: 'Olivia Jackson', email: 'olivia@example.com', status: 'Active', role: 'User', createdAt: '2023-12-20', lastActive: '2024-07-01' },
-  { id: 16, name: 'Paul Harris', email: 'paul@example.com', status: 'Inactive', role: 'Guest', createdAt: '2024-01-15', lastActive: '2024-03-01' },
-  { id: 17, name: 'Quinn Thompson', email: 'quinn@example.com', status: 'Active', role: 'User', createdAt: '2024-02-10', lastActive: '2024-06-30' },
-  { id: 18, name: 'Ruby Garcia', email: 'ruby@example.com', status: 'Active', role: 'Admin', createdAt: '2023-07-07', lastActive: '2024-07-02' },
-  { id: 19, name: 'Sam Rodriguez', email: 'sam@example.com', status: 'Pending', role: 'User', createdAt: '2024-03-25', lastActive: '2024-04-05' },
-  { id: 20, name: 'Tina Lewis', email: 'tina@example.com', status: 'Active', role: 'Guest', createdAt: '2023-08-14', lastActive: '2024-06-28' },
-  { id: 21, name: 'Uma King', email: 'uma@example.com', status: 'Active', role: 'User', createdAt: '2023-09-09', lastActive: '2024-07-01' },
-  { id: 22, name: 'Victor Scott', email: 'victor@example.com', status: 'Inactive', role: 'Admin', createdAt: '2023-10-31', lastActive: '2024-02-20' }
-];
 
 const Header = () => {
   const navItems = [
@@ -78,13 +54,38 @@ const Footer = () => (
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-white/50">© 2024 hi. All rights reserved.</p>
         <div className="flex items-center gap-6 text-sm text-white/50">
-          <Link to="/privacy" className="hover:text-white transition-colors duration-300">Privacy</Link>
-          <Link to="/terms" className="hover:text-white transition-colors duration-300">Terms</Link>
+          <a href="#" className="hover:text-white transition-colors duration-300">Privacy</a>
+          <a href="#" className="hover:text-white transition-colors duration-300">Terms</a>
         </div>
       </div>
     </div>
   </footer>
 );
+
+const mockUsers = [
+  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', status: 'Active', role: 'Admin', createdAt: '2023-01-15', lastActive: '2024-07-01' },
+  { id: 2, name: 'Bob Smith', email: 'bob@example.com', status: 'Active', role: 'User', createdAt: '2023-02-20', lastActive: '2024-06-30' },
+  { id: 3, name: 'Carol White', email: 'carol@example.com', status: 'Pending', role: 'Guest', createdAt: '2024-06-01', lastActive: '2024-06-29' },
+  { id: 4, name: 'David Brown', email: 'david@example.com', status: 'Inactive', role: 'User', createdAt: '2023-03-10', lastActive: '2023-12-15' },
+  { id: 5, name: 'Eve Davis', email: 'eve@example.com', status: 'Active', role: 'Admin', createdAt: '2023-04-05', lastActive: '2024-07-02' },
+  { id: 6, name: 'Frank Miller', email: 'frank@example.com', status: 'Active', role: 'User', createdAt: '2023-05-12', lastActive: '2024-06-28' },
+  { id: 7, name: 'Grace Lee', email: 'grace@example.com', status: 'Active', role: 'User', createdAt: '2023-06-18', lastActive: '2024-07-01' },
+  { id: 8, name: 'Henry Clark', email: 'henry@example.com', status: 'Pending', role: 'Guest', createdAt: '2024-05-20', lastActive: '2024-05-25' },
+  { id: 9, name: 'Ivy Martinez', email: 'ivy@example.com', status: 'Active', role: 'Admin', createdAt: '2023-07-22', lastActive: '2024-07-02' },
+  { id: 10, name: 'Jack Wilson', email: 'jack@example.com', status: 'Inactive', role: 'User', createdAt: '2023-08-30', lastActive: '2024-01-10' },
+  { id: 11, name: 'Karen Moore', email: 'karen@example.com', status: 'Active', role: 'User', createdAt: '2023-09-14', lastActive: '2024-06-30' },
+  { id: 12, name: 'Leo Taylor', email: 'leo@example.com', status: 'Active', role: 'Guest', createdAt: '2023-10-05', lastActive: '2024-06-29' },
+  { id: 13, name: 'Mia Anderson', email: 'mia@example.com', status: 'Pending', role: 'User', createdAt: '2024-04-01', lastActive: '2024-04-15' },
+  { id: 14, name: 'Noah Thomas', email: 'noah@example.com', status: 'Active', role: 'Admin', createdAt: '2023-11-11', lastActive: '2024-07-02' },
+  { id: 15, name: 'Olivia Jackson', email: 'olivia@example.com', status: 'Active', role: 'User', createdAt: '2023-12-20', lastActive: '2024-07-01' },
+  { id: 16, name: 'Paul Harris', email: 'paul@example.com', status: 'Inactive', role: 'Guest', createdAt: '2024-01-15', lastActive: '2024-03-01' },
+  { id: 17, name: 'Quinn Thompson', email: 'quinn@example.com', status: 'Active', role: 'User', createdAt: '2024-02-10', lastActive: '2024-06-30' },
+  { id: 18, name: 'Ruby Garcia', email: 'ruby@example.com', status: 'Active', role: 'Admin', createdAt: '2023-07-07', lastActive: '2024-07-02' },
+  { id: 19, name: 'Sam Rodriguez', email: 'sam@example.com', status: 'Pending', role: 'User', createdAt: '2024-03-25', lastActive: '2024-04-05' },
+  { id: 20, name: 'Tina Lewis', email: 'tina@example.com', status: 'Active', role: 'Guest', createdAt: '2023-08-14', lastActive: '2024-06-28' },
+  { id: 21, name: 'Uma King', email: 'uma@example.com', status: 'Active', role: 'User', createdAt: '2023-09-09', lastActive: '2024-07-01' },
+  { id: 22, name: 'Victor Scott', email: 'victor@example.com', status: 'Inactive', role: 'Admin', createdAt: '2023-10-31', lastActive: '2024-02-20' }
+];
 
 const UsersPage = () => {
   const [users, setUsers] = useState(mockUsers);

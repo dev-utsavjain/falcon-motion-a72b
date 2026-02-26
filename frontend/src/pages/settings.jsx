@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
@@ -10,41 +10,36 @@ const Icon = ({ name, ...props }) => {
 
 const Header = () => {
   const navItems = [
-    { name: 'Dashboard', path: '/', showInNav: true, navOrder: 1 },
-    { name: 'Analytics', path: '/analytics', showInNav: true, navOrder: 2 },
-    { name: 'Settings', path: '/settings', showInNav: true, navOrder: 3 }
+    { label: 'Dashboard', path: '/', icon: 'LayoutDashboard' },
+    { label: 'Users', path: '/users', icon: 'Users' },
+    { label: 'Analytics', path: '/analytics', icon: 'BarChart3' },
+    { label: 'Settings', path: '/settings', icon: 'Settings' }
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-[#050506]/80 backdrop-blur-xl border-b border-white/10">
-      <div className="container mx-auto px-4 md:px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
-            <div className="text-white font-bold text-xl">hi</div>
+            <a href="/" className="text-xl font-bold text-white">hi</a>
             <nav className="hidden md:flex items-center gap-6">
-              {navItems
-                .filter(item => item.showInNav)
-                .sort((a, b) => a.navOrder - b.navOrder)
-                .map(item => (
-                  <a
-                    key={item.path}
-                    href={item.path}
-                    className="text-white/70 hover:text-white transition-colors duration-300"
-                  >
-                    {item.name}
-                  </a>
-                ))}
+              {navItems.map(item => (
+                <a key={item.path} href={item.path} className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors duration-300">
+                  <Icon name={item.icon} className="w-4 h-4" />
+                  {item.label}
+                </a>
+              ))}
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <Icon name="Bell" className="w-5 h-5 text-white" />
+            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-300">
+              <Icon name="Bell" className="w-5 h-5 text-white/80" />
             </button>
-            <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <Icon name="User" className="w-5 h-5 text-white" />
+            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-300">
+              <Icon name="User" className="w-5 h-5 text-white/80" />
             </button>
-            <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <Icon name="LogOut" className="w-5 h-5 text-white" />
+            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-300">
+              <Icon name="LogOut" className="w-5 h-5 text-white/80" />
             </button>
           </div>
         </div>
@@ -55,36 +50,13 @@ const Header = () => {
 
 const Footer = () => (
   <footer className="bg-[#050506] border-t border-white/10 mt-24">
-    <div className="container mx-auto px-4 md:px-6 py-12">
-      <div className="grid md:grid-cols-4 gap-8">
-        <div>
-          <div className="text-white font-bold text-xl mb-4">hi</div>
-          <p className="text-white/60">Powering insights for modern teams</p>
+    <div className="container mx-auto px-4 md:px-6 py-8">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-sm text-white/50">© 2024 hi. All rights reserved.</p>
+        <div className="flex items-center gap-6 text-sm text-white/50">
+          <a href="#" className="hover:text-white transition-colors duration-300">Privacy</a>
+          <a href="#" className="hover:text-white transition-colors duration-300">Terms</a>
         </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Product</h4>
-          <ul className="space-y-2 text-white/60">
-            <li><a href="#" className="hover:text-white transition-colors">Analytics</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Settings</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Company</h4>
-          <ul className="space-y-2 text-white/60">
-            <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Legal</h4>
-          <ul className="space-y-2 text-white/60">
-            <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/60">
-        <p>&copy; 2024 hi. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -548,7 +520,6 @@ const DangerZone = () => {
 
   const handleDelete = () => {
     if (confirmText === 'DELETE') {
-      // TODO: connect API endpoint using src/config/api.js
       setShowModal(false);
       setConfirmText('');
     }
@@ -646,7 +617,6 @@ export default function Settings() {
 
   const handleSaveSettings = (newSettings) => {
     setSettings(newSettings);
-    // TODO: connect API endpoint using src/config/api.js
   };
 
   const renderContent = () => {
