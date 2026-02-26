@@ -30,73 +30,29 @@ const PasswordInput = ({ value, onChange, placeholder, showPassword, setShowPass
   </div>
 );
 
-const PasswordRequirements = () => (
-  <div className="mt-2 text-xs text-white/50 space-y-1">
-    <p>Password must contain:</p>
-    <ul className="list-disc list-inside space-y-0.5 ml-1">
-      <li>At least 8 characters</li>
-      <li>One uppercase letter</li>
-      <li>One lowercase letter</li>
-      <li>One number or special character</li>
-    </ul>
-  </div>
-);
-
-export default function RegisterPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) => {
-    const minLength = password.length >= 8;
-    const hasUpper = /[A-Z]/.test(password);
-    const hasLower = /[a-z]/.test(password);
-    const hasNumberOrSpecial = /[0-9!@#$%^&*]/.test(password);
-    return minLength && hasUpper && hasLower && hasNumberOrSpecial;
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setError('');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
-    if (!validateEmail(formData.email)) {
+    if (!validateEmail(email)) {
       setError('Please enter a valid email address');
-      return;
-    }
-
-    if (!validatePassword(formData.password)) {
-      setError('Password does not meet requirements');
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (!agreeToTerms) {
-      setError('Please agree to the terms and conditions');
       return;
     }
 
@@ -104,35 +60,40 @@ export default function RegisterPage() {
 
     try {
       // TODO: connect API endpoint using src/config/api.js
-      // const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_REGISTER}`, {
+      // const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_LOGIN}`, {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password })
+      //   body: JSON.stringify({ email, password, rememberMe })
       // });
 
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.token';
+      localStorage.setItem('authToken', mockToken);
+      
       setShowSuccess(true);
       setTimeout(() => {
-        navigate('/login');
+        navigate('/');
       }, 2000);
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError('Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleRegister = async () => {
+  const handleGoogleLogin = async () => {
     try {
       // TODO: connect API endpoint using src/config/api.js
       // window.location.href = `${API_BASE_URL}${API_ENDPOINTS.AUTH_GOOGLE}`;
       
       setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
+      const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.google.token';
+      localStorage.setItem('authToken', mockToken);
       navigate('/');
     } catch (err) {
-      setError('Google registration failed. Please try again.');
+      setError('Google login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -172,7 +133,7 @@ export default function RegisterPage() {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="text-3xl md:text-4xl font-bold text-white mb-2"
             >
-              Create your account
+              Welcome back
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -180,7 +141,7 @@ export default function RegisterPage() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-white/60"
             >
-              Get started with hi today
+              Sign in to your account to continue
             </motion.p>
           </div>
 
@@ -196,24 +157,6 @@ export default function RegisterPage() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <label htmlFor="name" className="block text-sm font-medium text-white/80">
-                    Full name
-                  </label>
-                  <div className="relative">
-                    <Icon name="User" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                    <input
-                      id="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      placeholder="John Doe"
-                      className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-[#5E6AD2] focus:ring-2 focus:ring-[#5E6AD2]/20 outline-none transition-all duration-300 text-white placeholder:text-white/40"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
                   <label htmlFor="email" className="block text-sm font-medium text-white/80">
                     Email address
                   </label>
@@ -222,8 +165,8 @@ export default function RegisterPage() {
                     <input
                       id="email"
                       type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
                       className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-[#5E6AD2] focus:ring-2 focus:ring-[#5E6AD2]/20 outline-none transition-all duration-300 text-white placeholder:text-white/40"
                       required
@@ -232,50 +175,37 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="password" className="block text-sm font-medium text-white/80">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="password" className="block text-sm font-medium text-white/80">
+                      Password
+                    </label>
+                    <Link
+                      to="/forgot-password"
+                      className="text-sm text-[#00D4FF] hover:text-white transition-colors duration-300"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
                   <PasswordInput
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Create a strong password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
                     showPassword={showPassword}
                     setShowPassword={setShowPassword}
                   />
-                  <PasswordRequirements />
                 </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-white/80">
-                    Confirm password
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="rounded border-white/20 bg-white/5"
+                    />
+                    <span className="text-sm text-white/80">Remember me</span>
                   </label>
-                  <PasswordInput
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    placeholder="Confirm your password"
-                    showPassword={showConfirmPassword}
-                    setShowPassword={setShowConfirmPassword}
-                  />
                 </div>
-
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreeToTerms}
-                    onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    className="mt-1 rounded border-white/20 bg-white/5"
-                  />
-                  <span className="text-sm text-white/80">
-                    I agree to the{' '}
-                    <a href="#" className="text-[#00D4FF] hover:text-white transition-colors">
-                      Terms of Service
-                    </a>{' '}
-                    and{' '}
-                    <a href="#" className="text-[#00D4FF] hover:text-white transition-colors">
-                      Privacy Policy
-                    </a>
-                  </span>
-                </label>
 
                 {error && (
                   <motion.div
@@ -297,10 +227,10 @@ export default function RegisterPage() {
                   {loading ? (
                     <>
                       <Icon name="Loader2" className="w-5 h-5 animate-spin" />
-                      Creating account...
+                      Signing in...
                     </>
                   ) : (
-                    'Create account'
+                    'Sign in'
                   )}
                 </motion.button>
 
@@ -317,7 +247,7 @@ export default function RegisterPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="button"
-                  onClick={handleGoogleRegister}
+                  onClick={handleGoogleLogin}
                   disabled={loading}
                   className="w-full py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3"
                 >
@@ -335,12 +265,12 @@ export default function RegisterPage() {
 
                 <div className="text-center">
                   <p className="text-sm text-white/60">
-                    Already have an account?{' '}
+                    Don't have an account?{' '}
                     <Link
-                      to="/login"
+                      to="/register"
                       className="text-[#00D4FF] hover:text-white transition-colors duration-300"
                     >
-                      Sign in
+                      Sign up
                     </Link>
                   </p>
                 </div>
@@ -363,9 +293,9 @@ export default function RegisterPage() {
                 </motion.div>
                 
                 <div className="space-y-2">
-                  <h2 className="text-xl font-semibold text-white">Account created!</h2>
+                  <h2 className="text-xl font-semibold text-white">Success!</h2>
                   <p className="text-white/60 text-sm">
-                    Redirecting to login...
+                    Redirecting to dashboard...
                   </p>
                 </div>
               </motion.div>
