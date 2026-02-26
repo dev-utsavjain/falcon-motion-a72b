@@ -1,0 +1,341 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-02-26T06:25:33.588377658Z",
+  "total_tasks": 27,
+  "completed_tasks": 1,
+  "failed_tasks": 0,
+  "status": "in_progress",
+  "tasks": [
+    {
+      "id": "task_001",
+      "category": "database",
+      "type": "model",
+      "title": "User Model",
+      "description": "Define GORM model for users with fields: id (UUID), name, email, avatar, role, status, createdAt, lastActive. Add indexes on email, status, role. Implement relationships: hasMany subscriptions, hasMany activities.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "backend/models/user.go"
+    },
+    {
+      "id": "task_002",
+      "category": "database",
+      "type": "model",
+      "title": "Subscription Model",
+      "description": "Define GORM model for subscriptions with fields: id (UUID), userId (UUID), plan, status, mrr, startDate, endDate. Add indexes on userId, status, plan. Implement relationship: belongsTo user.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/models/subscription.go"
+    },
+    {
+      "id": "task_003",
+      "category": "database",
+      "type": "model",
+      "title": "Activity Model",
+      "description": "Define GORM model for activities with fields: id (UUID), userId (UUID), type, description, metadata (json), createdAt. Add indexes on userId, type, createdAt. Implement relationship: belongsTo user.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/models/activity.go"
+    },
+    {
+      "id": "task_004",
+      "category": "database",
+      "type": "model",
+      "title": "Metric Model",
+      "description": "Define GORM model for metrics with fields: id (UUID), name, value, trend, date. Add indexes on name, date.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "backend/models/metric.go"
+    },
+    {
+      "id": "task_005",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/metrics",
+      "description": "Implement JWT-protected endpoint returning key metrics for dashboard KPIs: activeUsers, churnRate, growth, mrr, trends. Query Metric and User models, calculate trends.",
+      "status": "pending",
+      "dependencies": [
+        "task_004",
+        "task_001"
+      ],
+      "file_path": "backend/api/metrics.go"
+    },
+    {
+      "id": "task_006",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/revenue",
+      "description": "Implement JWT-protected endpoint returning revenue data for charts. Accept startDate/endDate query params. Aggregate Subscription MRR by date, return array of data points, total, and growth.",
+      "status": "pending",
+      "dependencies": [
+        "task_002"
+      ],
+      "file_path": "backend/api/revenue.go"
+    },
+    {
+      "id": "task_007",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/users",
+      "description": "Implement JWT-protected endpoint returning paginated user list. Support limit, page, search, sort query params. Return users array, total count, current page.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/api/users.go"
+    },
+    {
+      "id": "task_008",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/users/search",
+      "description": "Implement JWT-protected endpoint searching users by name or email. Accept query param, return filtered results array.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/api/usersSearch.go"
+    },
+    {
+      "id": "task_009",
+      "category": "backend",
+      "type": "api",
+      "title": "PUT /api/users/:id",
+      "description": "Implement JWT-protected endpoint updating user details. Accept name, email, role, status in body, validate, update User model, return updated user object and message.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/api/userUpdate.go"
+    },
+    {
+      "id": "task_010",
+      "category": "backend",
+      "type": "api",
+      "title": "POST /api/users/bulk-actions",
+      "description": "Implement JWT-protected endpoint performing bulk actions on users. Accept action (activate/deactivate/delete) and userIds array, apply action, return success flag and affected count.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/api/usersBulk.go"
+    },
+    {
+      "id": "task_011",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/analytics/traffic",
+      "description": "Implement JWT-protected endpoint returning traffic source analytics. Accept startDate/endDate query params, aggregate and return sources object with percentages and total.",
+      "status": "pending",
+      "dependencies": [
+        "task_003"
+      ],
+      "file_path": "backend/api/analyticsTraffic.go"
+    },
+    {
+      "id": "task_012",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/analytics/retention",
+      "description": "Implement JWT-protected endpoint returning user retention cohort data. Accept period query param, calculate weekly cohorts, return cohorts array and retention object.",
+      "status": "pending",
+      "dependencies": [
+        "task_001"
+      ],
+      "file_path": "backend/api/analyticsRetention.go"
+    },
+    {
+      "id": "task_013",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/analytics/features",
+      "description": "Implement JWT-protected endpoint returning feature usage analytics. Accept limit query param, aggregate Activity types, return top features array and total.",
+      "status": "pending",
+      "dependencies": [
+        "task_003"
+      ],
+      "file_path": "backend/api/analyticsFeatures.go"
+    },
+    {
+      "id": "task_014",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/notifications",
+      "description": "Implement JWT-protected endpoint returning user notifications. Support filter and page query params, return notifications array and unread count.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "backend/api/notifications.go"
+    },
+    {
+      "id": "task_015",
+      "category": "backend",
+      "type": "api",
+      "title": "GET /api/settings",
+      "description": "Implement JWT-protected endpoint returning current settings. Aggregate data from User, Subscription, and Team models, return general, billing, team objects.",
+      "status": "pending",
+      "dependencies": [
+        "task_001",
+        "task_002"
+      ],
+      "file_path": "backend/api/settingsGet.go"
+    },
+    {
+      "id": "task_016",
+      "category": "backend",
+      "type": "api",
+      "title": "PUT /api/settings",
+      "description": "Implement JWT-protected endpoint updating settings. Accept section and data object, validate, update corresponding models, return success message.",
+      "status": "pending",
+      "dependencies": [
+        "task_001",
+        "task_002"
+      ],
+      "file_path": "backend/api/settingsUpdate.go"
+    },
+    {
+      "id": "task_017",
+      "category": "frontend",
+      "type": "component",
+      "title": "KPI Card Component",
+      "description": "Create reusable KPI card component with props: title, value, trend, trendDirection, icon. Display value with trend arrow and percentage, use Framer Motion for hover and data update animations, style with Tailwind dark theme.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "frontend/src/components/kpiCard.jsx"
+    },
+    {
+      "id": "task_018",
+      "category": "frontend",
+      "type": "component",
+      "title": "Chart Container Component",
+      "description": "Create reusable chart wrapper component with props: title, data, type, loading, error. Include loading spinner and error state, use Framer Motion for smooth transitions, support line/bar/pie chart types with Recharts.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "frontend/src/components/chartContainer.jsx"
+    },
+    {
+      "id": "task_019",
+      "category": "frontend",
+      "type": "component",
+      "title": "User Table Component",
+      "description": "Create reusable sortable, searchable user table component with props: users, onSort, onSearch, onBulkAction, loading. Include columns for name, email, status, role, created date, last active, bulk checkbox selection, and action dropdowns.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "frontend/src/components/userTable.jsx"
+    },
+    {
+      "id": "task_020",
+      "category": "frontend",
+      "type": "component",
+      "title": "Notification Bell Component",
+      "description": "Create reusable notification bell component with props: unreadCount, notifications, onMarkRead. Display bell icon with unread badge, dropdown list of notifications with mark as read functionality, use Framer Motion for dropdown animation.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "frontend/src/components/notificationBell.jsx"
+    },
+    {
+      "id": "task_021",
+      "category": "frontend",
+      "type": "component",
+      "title": "Date Range Picker Component",
+      "description": "Create reusable date range picker component with props: startDate, endDate, onChange, presets. Include calendar inputs and preset buttons (7d, 30d, 90d), use date-fns for formatting, style with Tailwind.",
+      "status": "pending",
+      "dependencies": [],
+      "file_path": "frontend/src/components/dateRangePicker.jsx"
+    },
+    {
+      "id": "task_022",
+      "category": "frontend",
+      "type": "page",
+      "title": "Dashboard Page",
+      "description": "Create main dashboard page at route '/'. Include header with profile dropdown, KPI cards grid, revenue chart with date range picker, user activity heatmap, recent activity feed, quick action buttons, customizable widget grid with drag-and-drop, notification bell. Fetch data from /api/metrics, /api/revenue, /api/activity, /api/notifications. Auto-refresh every 30 seconds with Framer Motion transitions.",
+      "status": "pending",
+      "dependencies": [
+        "task_017",
+        "task_018",
+        "task_020",
+        "task_021",
+        "task_005",
+        "task_006"
+      ],
+      "file_path": "frontend/src/pages/dashboard.jsx"
+    },
+    {
+      "id": "task_023",
+      "category": "frontend",
+      "type": "page",
+      "title": "Users Page",
+      "description": "Create users management page at route '/users'. Include user table with search and filters, user profile modal, subscription status badges, role management dropdown, bulk actions toolbar, add user button, export users button, pagination controls. Fetch data from /api/users, /api/users/search, /api/users/:id, /api/users/bulk-actions.",
+      "status": "pending",
+      "dependencies": [
+        "task_019",
+        "task_007",
+        "task_008",
+        "task_009",
+        "task_010"
+      ],
+      "file_path": "frontend/src/pages/users.jsx"
+    },
+    {
+      "id": "task_024",
+      "category": "frontend",
+      "type": "page",
+      "title": "Analytics Page",
+      "description": "Create analytics page at route '/analytics'. Include analytics header with date picker, traffic sources pie chart, user retention cohort chart, feature usage bar chart, custom report builder, export report button, real-time visitors counter, geographic distribution map. Fetch data from /api/analytics/traffic, /api/analytics/retention, /api/analytics/features, /api/analytics/reports.",
+      "status": "pending",
+      "dependencies": [
+        "task_018",
+        "task_021",
+        "task_011",
+        "task_012",
+        "task_013"
+      ],
+      "file_path": "frontend/src/pages/analytics.jsx"
+    },
+    {
+      "id": "task_025",
+      "category": "frontend",
+      "type": "page",
+      "title": "Settings Page",
+      "description": "Create settings page at route '/settings'. Include settings navigation tabs (General, Billing, Team, Integrations, API, Notifications), forms for each section, team members list with invitations, integrations marketplace toggles, API keys management with copy/regenerate, danger zone with delete confirmation. Fetch data from /api/settings, /api/billing, /api/team, /api/integrations, /api/api-keys.",
+      "status": "pending",
+      "dependencies": [
+        "task_015",
+        "task_016"
+      ],
+      "file_path": "frontend/src/pages/settings.jsx"
+    },
+    {
+      "id": "task_026",
+      "category": "frontend",
+      "type": "page",
+      "title": "Notifications Page",
+      "description": "Create notifications page at route '/notifications'. Include notification filters (All, Unread, Alerts, Updates), notification list with timestamps and swipe actions, mark as read/unread buttons, notification preferences link, clear all button with confirmation, infinite scroll loading 20 items at a time. Fetch data from /api/notifications, /api/notifications/mark-read, /api/notifications/clear.",
+      "status": "pending",
+      "dependencies": [
+        "task_014"
+      ],
+      "file_path": "frontend/src/pages/notifications.jsx"
+    },
+    {
+      "id": "task_027",
+      "category": "frontend",
+      "type": "page",
+      "title": "App.jsx",
+      "description": "Create main App component with React Router setup. Define routes: / -\u003e Dashboard, /users -\u003e Users, /analytics -\u003e Analytics, /settings -\u003e Settings, /notifications -\u003e Notifications. Include sticky header navigation with logo, search, nav items in order 1-4, and extra items (Notifications, Profile, Logout). Apply dark theme with primary #5E6AD2, secondary #7C3AED, accent #00D4FF, Inter font, lg border radius, medium shadows. Wrap routes with auth context and JWT provider. List all frontend pages: dashboard, users, analytics, settings, notifications. List all backend APIs: /api/metrics, /api/revenue, /api/users, /api/users/search, /api/users/:id, /api/users/bulk-actions, /api/analytics/traffic, /api/analytics/retention, /api/analytics/features, /api/notifications, /api/settings. List all database models: user, subscription, activity, metric.",
+      "status": "completed",
+      "dependencies": [
+        "task_022",
+        "task_023",
+        "task_024",
+        "task_025",
+        "task_026"
+      ],
+      "file_path": "frontend/src/App.jsx",
+      "started_at": "2026-02-26T06:27:35.320235488Z",
+      "completed_at": "2026-02-26T06:49:27.696459708Z"
+    }
+  ]
+}

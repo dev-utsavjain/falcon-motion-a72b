@@ -1,15 +1,15 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from '@pages/Home';
-import Dashboard from '@pages/Dashboard';
-import Users from '@pages/Users';
-import Analytics from '@pages/Analytics';
-import Settings from '@pages/Settings';
-import Notifications from '@pages/Notifications';
-import Login from '@pages/Login';
-import Register from '@pages/Register';
-import ForgotPassword from '@pages/ForgotPassword';
-import ResetPassword from '@pages/ResetPassword';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Users from './pages/Users';
+import Analytics from './pages/Analytics';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (

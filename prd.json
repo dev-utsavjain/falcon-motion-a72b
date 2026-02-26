@@ -1,0 +1,1094 @@
+{
+  "project_metadata": {
+    "project_name": "hi",
+    "project_category": "SaaS",
+    "description": "A comprehensive dashboard for managing SaaS products, users, analytics, and settings with real-time data visualization and team collaboration features.",
+    "core_purpose": "Provide SaaS founders and teams with a centralized hub to monitor, manage, and grow their product.",
+    "target_audience": "Founders",
+    "key_features": [
+      "Real-time analytics",
+      "User management",
+      "Revenue tracking",
+      "Team collaboration",
+      "API monitoring",
+      "Customizable widgets",
+      "Multi-tenant support",
+      "Notification center",
+      "User authentication",
+      "Social login",
+      "Password reset",
+      "JWT token authentication",
+      "Automatic token refresh",
+      "Protected API routes"
+    ]
+  },
+  "frontend": {
+    "pages": [
+      {
+        "page_name": "dashboard",
+        "route": "/",
+        "show_in_nav": true,
+        "nav_order": 1,
+        "purpose": "Main dashboard showing key metrics, charts, and quick actions for the SaaS product",
+        "sections": [
+          "Header with user profile dropdown",
+          "KPI cards (MRR, Active Users, Churn Rate, Growth)",
+          "Revenue chart with time range selector",
+          "User activity heatmap",
+          "Recent activity feed",
+          "Quick action buttons (Add User, View Reports, Settings)",
+          "Customizable widget grid",
+          "Notification bell with badge"
+        ],
+        "content_notes": "Dashboard serves as the main hub. KPI cards should show live data with trend indicators (up/down arrows). Revenue chart defaults to last 30 days with ability to switch ranges. Activity feed shows latest 5 events with timestamps. Widget grid allows drag-and-drop rearrangement. All data refreshes every 30 seconds. Use Framer Motion for smooth transitions when data updates.",
+        "data_needs": [
+          "/api/metrics",
+          "/api/revenue",
+          "/api/activity",
+          "/api/notifications"
+        ],
+        "is_protected": true
+      },
+      {
+        "page_name": "users",
+        "route": "/users",
+        "show_in_nav": true,
+        "nav_order": 2,
+        "purpose": "Manage users, view user details, handle subscriptions and permissions",
+        "sections": [
+          "User table with search and filters",
+          "User profile modal",
+          "Subscription status badges",
+          "Role management dropdown",
+          "Bulk actions toolbar",
+          "Add user button",
+          "Export users button",
+          "Pagination controls"
+        ],
+        "content_notes": "User table includes columns: Name, Email, Status, Role, Created Date, Last Active. Search filters by name/email. Status shows Active/Inactive/Pending. Role dropdown allows Admin/User/Guest selection. Bulk actions include activate/deactivate/delete. Add user opens modal with form validation. Export generates CSV. Table supports sorting and pagination (20 users per page).",
+        "data_needs": [
+          "/api/users",
+          "/api/users/search",
+          "/api/users/:id",
+          "/api/users/bulk-actions"
+        ],
+        "is_protected": true
+      },
+      {
+        "page_name": "analytics",
+        "route": "/analytics",
+        "show_in_nav": true,
+        "nav_order": 3,
+        "purpose": "Deep dive into product analytics with custom reports and data visualization",
+        "sections": [
+          "Analytics header with date picker",
+          "Traffic sources pie chart",
+          "User retention cohort chart",
+          "Feature usage bar chart",
+          "Custom report builder",
+          "Export report button",
+          "Real-time visitors counter",
+          "Geographic distribution map"
+        ],
+        "content_notes": "Analytics page provides comprehensive insights. Date picker defaults to last 7 days with preset ranges. Traffic sources show Direct, Organic, Referral, Social percentages. Retention cohort shows weekly return rates. Feature usage displays top 10 features by usage count. Report builder allows selecting metrics and time ranges. All charts use Framer Motion for smooth transitions. Map shows user distribution with country hover effects.",
+        "data_needs": [
+          "/api/analytics/traffic",
+          "/api/analytics/retention",
+          "/api/analytics/features",
+          "/api/analytics/reports"
+        ],
+        "is_protected": true
+      },
+      {
+        "page_name": "settings",
+        "route": "/settings",
+        "show_in_nav": true,
+        "nav_order": 4,
+        "purpose": "Configure product settings, billing, team members, and integrations",
+        "sections": [
+          "Settings navigation tabs",
+          "General settings form",
+          "Billing information section",
+          "Team members list",
+          "Integrations marketplace",
+          "API keys management",
+          "Notification preferences",
+          "Danger zone for account actions"
+        ],
+        "content_notes": "Settings uses tabbed interface: General, Billing, Team, Integrations, API, Notifications. General includes company name, timezone, language. Billing shows current plan, payment method, invoice history. Team shows members with role management and invitation system. Integrations lists available services with toggle switches. API keys shows active keys with copy and regenerate options. Danger zone includes delete account with confirmation modal. All forms have validation and save indicators.",
+        "data_needs": [
+          "/api/settings",
+          "/api/billing",
+          "/api/team",
+          "/api/integrations",
+          "/api/api-keys"
+        ],
+        "is_protected": true
+      },
+      {
+        "page_name": "notifications",
+        "route": "/notifications",
+        "show_in_nav": false,
+        "nav_order": 0,
+        "purpose": "View and manage all notifications, alerts, and system messages",
+        "sections": [
+          "Notification filters (All, Unread, Alerts, Updates)",
+          "Notification list with timestamps",
+          "Mark as read/unread actions",
+          "Notification preferences link",
+          "Clear all button",
+          "Infinite scroll for notifications"
+        ],
+        "content_notes": "Notification center shows all system alerts. Filters allow viewing by type. Each notification shows icon, title, message, timestamp, and read status. Swipe actions on mobile for mark read/delete. Preferences link opens settings modal. Clear all shows confirmation. Infinite scroll loads 20 notifications at a time. Unread count shows in header bell icon.",
+        "data_needs": [
+          "/api/notifications",
+          "/api/notifications/mark-read",
+          "/api/notifications/clear"
+        ],
+        "is_protected": true
+      },
+      {
+        "page_name": "login",
+        "route": "/login",
+        "show_in_nav": false,
+        "nav_order": 0,
+        "purpose": "User authentication page with email/password login and social login options",
+        "sections": [
+          "Logo and app name",
+          "Email input field",
+          "Password input field with show/hide toggle",
+          "Remember me checkbox",
+          "Forgot password link",
+          "Login button",
+          "Social login divider",
+          "Google login button",
+          "Sign up link"
+        ],
+        "content_notes": "Login page should be clean and minimal. Form validation for email format and required fields. Remember me persists login session. Forgot password links to password reset page. Social login uses Google OAuth. Include loading states and error messages. Redirect to dashboard on successful login. Store JWT token in localStorage with automatic attachment via Axios interceptors.",
+        "data_needs": [
+          "/api/auth/login",
+          "/api/auth/google"
+        ],
+        "is_protected": false
+      },
+      {
+        "page_name": "register",
+        "route": "/register",
+        "show_in_nav": false,
+        "nav_order": 0,
+        "purpose": "User registration page for creating new accounts",
+        "sections": [
+          "Logo and app name",
+          "Name input field",
+          "Email input field",
+          "Password input field with strength indicator",
+          "Confirm password input field",
+          "Terms and conditions checkbox",
+          "Sign up button",
+          "Social signup divider",
+          "Google signup button",
+          "Login link"
+        ],
+        "content_notes": "Registration form with real-time validation. Password strength indicator shows weak/medium/strong. Confirm password must match. Terms checkbox required. Show success message and redirect to login on completion. Include client-side validation and error handling. Store JWT token in localStorage after successful registration.",
+        "data_needs": [
+          "/api/auth/register",
+          "/api/auth/google"
+        ],
+        "is_protected": false
+      },
+      {
+        "page_name": "forgotPassword",
+        "route": "/forgot-password",
+        "show_in_nav": false,
+        "nav_order": 0,
+        "purpose": "Password reset request page",
+        "sections": [
+          "Logo and app name",
+          "Instructions text",
+          "Email input field",
+          "Send reset link button",
+          "Back to login link",
+          "Success message area"
+        ],
+        "content_notes": "Simple form for requesting password reset. Clear instructions about checking email. Success message shows after submission. Include rate limiting message. Link back to login page.",
+        "data_needs": [
+          "/api/auth/forgot-password"
+        ],
+        "is_protected": false
+      },
+      {
+        "page_name": "resetPassword",
+        "route": "/reset-password/:token",
+        "show_in_nav": false,
+        "nav_order": 0,
+        "purpose": "Password reset confirmation page",
+        "sections": [
+          "Logo and app name",
+          "New password input field",
+          "Confirm new password input field",
+          "Reset password button",
+          "Password requirements hint",
+          "Success message area"
+        ],
+        "content_notes": "Form for setting new password using reset token from email. Show password requirements. Confirm password must match. Success message and redirect to login after completion.",
+        "data_needs": [
+          "/api/auth/reset-password"
+        ],
+        "is_protected": false
+      }
+    ],
+    "navigation": {
+      "type": "header",
+      "position": "sticky",
+      "style": "horizontal",
+      "has_logo": true,
+      "has_search": true,
+      "extra_items": [
+        "Notifications",
+        "Profile",
+        "Logout"
+      ]
+    },
+    "theme": {
+      "design_dna": "LINEAR_MODERN",
+      "color_scheme": "dark",
+      "primary_color": "#5E6AD2",
+      "secondary_color": "#7C3AED",
+      "accent_color": "#00D4FF",
+      "font_family": "Inter",
+      "font_type": "sans",
+      "border_radius": "lg",
+      "shadow_style": "medium",
+      "animation_style": "moderate",
+      "interaction_style": "subtle"
+    },
+    "components": [
+      {
+        "component_name": "kpiCard",
+        "type": "shared",
+        "used_on": [
+          "dashboard"
+        ],
+        "purpose": "Display key metric with value, label, and trend indicator",
+        "props": [
+          "title",
+          "value",
+          "trend",
+          "trendDirection",
+          "icon"
+        ]
+      },
+      {
+        "component_name": "chartContainer",
+        "type": "shared",
+        "used_on": [
+          "dashboard",
+          "analytics"
+        ],
+        "purpose": "Wrapper for charts with loading states and error handling",
+        "props": [
+          "title",
+          "data",
+          "type",
+          "loading",
+          "error"
+        ]
+      },
+      {
+        "component_name": "userTable",
+        "type": "shared",
+        "used_on": [
+          "users"
+        ],
+        "purpose": "Sortable, searchable table for user data",
+        "props": [
+          "users",
+          "onSort",
+          "onSearch",
+          "onBulkAction",
+          "loading"
+        ]
+      },
+      {
+        "component_name": "notificationBell",
+        "type": "shared",
+        "used_on": [
+          "dashboard",
+          "users",
+          "analytics",
+          "settings"
+        ],
+        "purpose": "Notification icon with unread badge and dropdown",
+        "props": [
+          "unreadCount",
+          "notifications",
+          "onMarkRead"
+        ]
+      },
+      {
+        "component_name": "dateRangePicker",
+        "type": "shared",
+        "used_on": [
+          "dashboard",
+          "analytics"
+        ],
+        "purpose": "Date range selector with presets",
+        "props": [
+          "startDate",
+          "endDate",
+          "onChange",
+          "presets"
+        ]
+      },
+      {
+        "component_name": "authForm",
+        "type": "shared",
+        "used_on": [
+          "login",
+          "register",
+          "forgotPassword",
+          "resetPassword"
+        ],
+        "purpose": "Reusable authentication form wrapper with validation",
+        "props": [
+          "type",
+          "onSubmit",
+          "loading",
+          "error"
+        ]
+      },
+      {
+        "component_name": "userProfileDropdown",
+        "type": "shared",
+        "used_on": [
+          "dashboard",
+          "users",
+          "analytics",
+          "settings",
+          "notifications"
+        ],
+        "purpose": "User profile dropdown menu with user info and logout option",
+        "props": [
+          "user",
+          "onLogout"
+        ]
+      },
+      {
+        "component_name": "socialLoginButton",
+        "type": "shared",
+        "used_on": [
+          "login",
+          "register"
+        ],
+        "purpose": "Google OAuth login button",
+        "props": [
+          "provider",
+          "onClick",
+          "loading"
+        ]
+      },
+      {
+        "component_name": "passwordInput",
+        "type": "shared",
+        "used_on": [
+          "login",
+          "register",
+          "resetPassword"
+        ],
+        "purpose": "Password input field with show/hide toggle and strength indicator",
+        "props": [
+          "value",
+          "onChange",
+          "showStrength",
+          "confirmValue"
+        ]
+      },
+      {
+        "component_name": "authProvider",
+        "type": "shared",
+        "used_on": [
+          "all"
+        ],
+        "purpose": "Authentication context provider for managing JWT tokens and user state",
+        "props": [
+          "children"
+        ]
+      },
+      {
+        "component_name": "protectedRoute",
+        "type": "shared",
+        "used_on": [
+          "dashboard",
+          "users",
+          "analytics",
+          "settings",
+          "notifications"
+        ],
+        "purpose": "Route wrapper that checks for valid JWT token before rendering",
+        "props": [
+          "children",
+          "redirectTo"
+        ]
+      },
+      {
+        "component_name": "apiClient",
+        "type": "shared",
+        "used_on": [
+          "all"
+        ],
+        "purpose": "Axios instance with interceptors for token attachment and refresh logic",
+        "props": []
+      }
+    ],
+    "layout": {
+      "has_header": true,
+      "has_footer": false,
+      "has_sidebar": false,
+      "max_width": "container",
+      "spacing": "spacious",
+      "footer_links": []
+    }
+  },
+  "backend": {
+    "requires_backend": true,
+    "apis": [
+      {
+        "endpoint": "/api/metrics",
+        "method": "GET",
+        "purpose": "Get key metrics for dashboard KPIs",
+        "request_body": {},
+        "response": {
+          "activeUsers": "number",
+          "churnRate": "number",
+          "growth": "number",
+          "mrr": "number",
+          "trends": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "dashboard"
+        ]
+      },
+      {
+        "endpoint": "/api/revenue",
+        "method": "GET",
+        "purpose": "Get revenue data for charts",
+        "request_body": {
+          "endDate": "string",
+          "startDate": "string"
+        },
+        "response": {
+          "data": "array",
+          "growth": "number",
+          "total": "number"
+        },
+        "auth": true,
+        "used_by": [
+          "dashboard"
+        ]
+      },
+      {
+        "endpoint": "/api/users",
+        "method": "GET",
+        "purpose": "Get paginated user list",
+        "request_body": {
+          "limit": "number",
+          "page": "number",
+          "search": "string",
+          "sort": "string"
+        },
+        "response": {
+          "page": "number",
+          "total": "number",
+          "users": "array"
+        },
+        "auth": true,
+        "used_by": [
+          "users"
+        ]
+      },
+      {
+        "endpoint": "/api/users/search",
+        "method": "GET",
+        "purpose": "Search users by name or email",
+        "request_body": {
+          "query": "string"
+        },
+        "response": {
+          "results": "array"
+        },
+        "auth": true,
+        "used_by": [
+          "users"
+        ]
+      },
+      {
+        "endpoint": "/api/users/:id",
+        "method": "PUT",
+        "purpose": "Update user details",
+        "request_body": {
+          "email": "string",
+          "name": "string",
+          "role": "string",
+          "status": "string"
+        },
+        "response": {
+          "message": "string",
+          "user": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "users"
+        ]
+      },
+      {
+        "endpoint": "/api/users/bulk-actions",
+        "method": "POST",
+        "purpose": "Perform bulk actions on users",
+        "request_body": {
+          "action": "string",
+          "userIds": "array"
+        },
+        "response": {
+          "affected": "number",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "users"
+        ]
+      },
+      {
+        "endpoint": "/api/analytics/traffic",
+        "method": "GET",
+        "purpose": "Get traffic source analytics",
+        "request_body": {
+          "endDate": "string",
+          "startDate": "string"
+        },
+        "response": {
+          "sources": "object",
+          "total": "number"
+        },
+        "auth": true,
+        "used_by": [
+          "analytics"
+        ]
+      },
+      {
+        "endpoint": "/api/analytics/retention",
+        "method": "GET",
+        "purpose": "Get user retention cohort data",
+        "request_body": {
+          "period": "string"
+        },
+        "response": {
+          "cohorts": "array",
+          "retention": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "analytics"
+        ]
+      },
+      {
+        "endpoint": "/api/analytics/features",
+        "method": "GET",
+        "purpose": "Get feature usage analytics",
+        "request_body": {
+          "limit": "number"
+        },
+        "response": {
+          "features": "array",
+          "total": "number"
+        },
+        "auth": true,
+        "used_by": [
+          "analytics"
+        ]
+      },
+      {
+        "endpoint": "/api/notifications",
+        "method": "GET",
+        "purpose": "Get user notifications",
+        "request_body": {
+          "filter": "string",
+          "page": "number"
+        },
+        "response": {
+          "notifications": "array",
+          "unread": "number"
+        },
+        "auth": true,
+        "used_by": [
+          "dashboard",
+          "notifications"
+        ]
+      },
+      {
+        "endpoint": "/api/notifications/mark-read",
+        "method": "POST",
+        "purpose": "Mark notifications as read",
+        "request_body": {
+          "notificationIds": "array"
+        },
+        "response": {
+          "success": "boolean",
+          "updated": "number"
+        },
+        "auth": true,
+        "used_by": [
+          "notifications"
+        ]
+      },
+      {
+        "endpoint": "/api/notifications/clear",
+        "method": "POST",
+        "purpose": "Clear all notifications",
+        "request_body": {},
+        "response": {
+          "cleared": "number",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "notifications"
+        ]
+      },
+      {
+        "endpoint": "/api/settings",
+        "method": "GET",
+        "purpose": "Get current settings",
+        "request_body": {},
+        "response": {
+          "billing": "object",
+          "general": "object",
+          "team": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/settings",
+        "method": "PUT",
+        "purpose": "Update settings",
+        "request_body": {
+          "data": "object",
+          "section": "string"
+        },
+        "response": {
+          "message": "string",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/billing",
+        "method": "GET",
+        "purpose": "Get billing information",
+        "request_body": {},
+        "response": {
+          "invoices": "array",
+          "paymentMethod": "object",
+          "plan": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/team",
+        "method": "GET",
+        "purpose": "Get team members list",
+        "request_body": {},
+        "response": {
+          "members": "array"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/team",
+        "method": "POST",
+        "purpose": "Invite team member",
+        "request_body": {
+          "email": "string",
+          "role": "string"
+        },
+        "response": {
+          "invitation": "object",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/integrations",
+        "method": "GET",
+        "purpose": "Get available integrations",
+        "request_body": {},
+        "response": {
+          "integrations": "array"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/api-keys",
+        "method": "GET",
+        "purpose": "Get user API keys",
+        "request_body": {},
+        "response": {
+          "keys": "array"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/api-keys",
+        "method": "POST",
+        "purpose": "Generate new API key",
+        "request_body": {
+          "name": "string"
+        },
+        "response": {
+          "key": "string",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "settings"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/login",
+        "method": "POST",
+        "purpose": "Authenticate user with email and password",
+        "request_body": {
+          "email": "string",
+          "password": "string",
+          "rememberMe": "boolean"
+        },
+        "response": {
+          "refreshToken": "string",
+          "token": "string",
+          "user": "object"
+        },
+        "auth": false,
+        "used_by": [
+          "login"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/register",
+        "method": "POST",
+        "purpose": "Register new user account",
+        "request_body": {
+          "email": "string",
+          "name": "string",
+          "password": "string"
+        },
+        "response": {
+          "message": "string",
+          "refreshToken": "string",
+          "success": "boolean",
+          "token": "string"
+        },
+        "auth": false,
+        "used_by": [
+          "register"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/google",
+        "method": "POST",
+        "purpose": "Authenticate user with Google OAuth",
+        "request_body": {
+          "token": "string"
+        },
+        "response": {
+          "refreshToken": "string",
+          "token": "string",
+          "user": "object"
+        },
+        "auth": false,
+        "used_by": [
+          "login",
+          "register"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/forgot-password",
+        "method": "POST",
+        "purpose": "Request password reset email",
+        "request_body": {
+          "email": "string"
+        },
+        "response": {
+          "message": "string",
+          "success": "boolean"
+        },
+        "auth": false,
+        "used_by": [
+          "forgotPassword"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/reset-password",
+        "method": "POST",
+        "purpose": "Reset password using token",
+        "request_body": {
+          "password": "string",
+          "token": "string"
+        },
+        "response": {
+          "message": "string",
+          "success": "boolean"
+        },
+        "auth": false,
+        "used_by": [
+          "resetPassword"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/refresh",
+        "method": "POST",
+        "purpose": "Refresh JWT token using refresh token",
+        "request_body": {
+          "refreshToken": "string"
+        },
+        "response": {
+          "refreshToken": "string",
+          "token": "string"
+        },
+        "auth": false,
+        "used_by": [
+          "apiClient"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/logout",
+        "method": "POST",
+        "purpose": "Logout user and invalidate token",
+        "request_body": {},
+        "response": {
+          "message": "string",
+          "success": "boolean"
+        },
+        "auth": true,
+        "used_by": [
+          "userProfileDropdown"
+        ]
+      },
+      {
+        "endpoint": "/api/auth/me",
+        "method": "GET",
+        "purpose": "Get current authenticated user info",
+        "request_body": {},
+        "response": {
+          "user": "object"
+        },
+        "auth": true,
+        "used_by": [
+          "userProfileDropdown",
+          "authProvider"
+        ]
+      }
+    ],
+    "database": {
+      "models": [
+        {
+          "model_name": "user",
+          "fields": {
+            "avatar": "string",
+            "createdAt": "timestamp",
+            "email": "string",
+            "emailVerified": "boolean",
+            "id": "UUID",
+            "lastActive": "timestamp",
+            "name": "string",
+            "password": "string",
+            "provider": "string",
+            "providerId": "string",
+            "resetPasswordExpires": "timestamp",
+            "resetPasswordToken": "string",
+            "role": "string",
+            "status": "string"
+          },
+          "relationships": [
+            "Users hasMany subscriptions",
+            "Users hasMany activities"
+          ],
+          "indexes": [
+            "email",
+            "status",
+            "role",
+            "resetPasswordToken"
+          ]
+        },
+        {
+          "model_name": "subscription",
+          "fields": {
+            "endDate": "date",
+            "id": "UUID",
+            "mrr": "number",
+            "plan": "string",
+            "startDate": "date",
+            "status": "string",
+            "userId": "UUID"
+          },
+          "relationships": [
+            "Subscription belongsTo user"
+          ],
+          "indexes": [
+            "userId",
+            "status",
+            "plan"
+          ]
+        },
+        {
+          "model_name": "activity",
+          "fields": {
+            "createdAt": "timestamp",
+            "description": "string",
+            "id": "UUID",
+            "metadata": "json",
+            "type": "string",
+            "userId": "UUID"
+          },
+          "relationships": [
+            "Activity belongsTo user"
+          ],
+          "indexes": [
+            "userId",
+            "type",
+            "createdAt"
+          ]
+        },
+        {
+          "model_name": "metric",
+          "fields": {
+            "date": "date",
+            "id": "UUID",
+            "name": "string",
+            "trend": "string",
+            "value": "number"
+          },
+          "relationships": [],
+          "indexes": [
+            "name",
+            "date"
+          ]
+        },
+        {
+          "model_name": "refreshToken",
+          "fields": {
+            "expiresAt": "timestamp",
+            "id": "UUID",
+            "token": "string",
+            "userId": "UUID"
+          },
+          "relationships": [
+            "RefreshToken belongsTo user"
+          ],
+          "indexes": [
+            "token",
+            "userId"
+          ]
+        }
+      ]
+    },
+    "authentication": {
+      "required": true,
+      "type": "jwt",
+      "providers": [
+        "email",
+        "google"
+      ],
+      "protected_apis": [
+        "/api/metrics",
+        "/api/revenue",
+        "/api/users",
+        "/api/analytics",
+        "/api/settings",
+        "/api/notifications",
+        "/api/billing",
+        "/api/team",
+        "/api/integrations",
+        "/api/api-keys",
+        "/api/auth/logout",
+        "/api/auth/me"
+      ]
+    },
+    "external_apis": [
+      {
+        "name": "Stripe",
+        "purpose": "Payment processing and subscription management",
+        "required": true
+      }
+    ],
+    "file_storage": {
+      "required": true,
+      "types": [
+        "images",
+        "documents"
+      ],
+      "max_size": "10MB"
+    }
+  },
+  "technical_specs": {
+    "frontend": {
+      "framework": "React",
+      "routing": "react-router-dom",
+      "styling": "Tailwind CSS v4",
+      "state_management": "React Context",
+      "animation": "Framer Motion",
+      "dependencies": [
+        "react@^19.0.0",
+        "react-dom@^19.0.0",
+        "react-router-dom@^7.0.0",
+        "tailwindcss@^4.0.0",
+        "@tailwindcss/vite",
+        "framer-motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge",
+        "recharts",
+        "date-fns",
+        "react-hook-form",
+        "@hookform/resolvers",
+        "zod",
+        "axios",
+        "js-cookie"
+      ]
+    },
+    "backend": {
+      "framework": "Standard Library",
+      "database": "PostgreSQL",
+      "orm": "GORM",
+      "auth": "JWT",
+      "dependencies": [
+        "github.com/gorilla/mux",
+        "github.com/golang-jwt/jwt/v5",
+        "gorm.io/gorm",
+        "gorm.io/driver/postgres",
+        "github.com/lib/pq",
+        "golang.org/x/crypto/bcrypt"
+      ]
+    }
+  }
+}
